@@ -7,3 +7,10 @@ sudo apt-get install build-essential -y
 # install dependencies
 cd ~/devcode-giftcards/
 npm install
+
+# install and setup nginx
+sudo apt-get install nginx
+sudo cp config/decode-giftcards /etc/nginx/sites-available
+sudo ln -s /etc/nginx/sites-available/decode-giftcards /etc/nginx/sites-enabled/decode-giftcards
+sudo rm /etc/nginx/sites-enabled/default
+sudo nginx -s reload
