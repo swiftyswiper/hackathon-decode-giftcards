@@ -1,25 +1,25 @@
 CREATE TABLE giftcards(
-	gid bigint PRIMARY KEY,
+	giftcard_id bigint PRIMARY KEY,
 	amount decimal NOT NULL
 );
 
 CREATE TABLE corporations(
-	coid int PRIMARY KEY,
+	corp_id int PRIMARY KEY,
 	name varchar(255)
 );
 
 CREATE TABLE stores(
-	sid int PRIMARY KEY,
+	store_id int PRIMARY KEY,
 	name varchar(255)
 );
 
 CREATE TABLE giftcard_usage(
-	gid bigint REFERENCES giftcards(gid),
-	coid int REFERENCES corporations(coid),
+	giftcard_id bigint REFERENCES giftcards(giftcard_id),
+	corp_id int REFERENCES corporations(corp_id),
 	date_used date NOT NULL
 );
 
 CREATE TABLE corp_stores(
-	coid int REFERENCES corporations(coid),
-	sid int REFERENCES stores(sid)
+	corp_id int REFERENCES corporations(corp_id),
+	store_id int REFERENCES stores(store_id)
 );
