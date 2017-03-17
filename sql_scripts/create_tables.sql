@@ -4,11 +4,13 @@ CREATE TABLE giftcards(
 );
 
 CREATE TABLE corporations(
-	coid int PRIMARY KEY
+	coid int PRIMARY KEY,
+	name varchar(255)
 );
 
 CREATE TABLE stores(
-	sid int PRIMARY KEY
+	sid int PRIMARY KEY,
+	name varchar(255)
 );
 
 CREATE TABLE giftcard_usage(
@@ -21,11 +23,3 @@ CREATE TABLE corp_stores(
 	coid int REFERENCES corporations(coid),
 	sid int REFERENCES stores(sid)
 );
-
-
---BE CAREFUL WITH REMOVING TABLES THAT HAVE DEPENDANT TABLES
---DROP TABLE giftcards;
---DROP TABLE corporations;
---DROP TABLE stores;
---DROP TABLE giftcard_usage;
---DROP TABLE corp_stores;
