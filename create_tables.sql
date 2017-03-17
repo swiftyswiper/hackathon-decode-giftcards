@@ -1,23 +1,31 @@
-CREATE TABLE giftcard(
+CREATE TABLE giftcards(
 	gid int PRIMARY KEY,
 	amount int NOT NULL
 );
 
-CREATE TABLE corporation(
+CREATE TABLE corporations(
 	coid int PRIMARY KEY
 );
 
-CREATE TABLE store(
+CREATE TABLE stores(
 	sid int PRIMARY KEY
 );
 
-CREATE TABLE giftcardusage(
-	gid int REFERENCES giftcard(gid),
-	coid int REFERENCES corporation(coid),
+CREATE TABLE giftcard_usage(
+	gid int REFERENCES giftcards(gid),
+	coid int REFERENCES corporations(coid),
 	date_used date NOT NULL
 );
 
 CREATE TABLE corp_stores(
-	coid int REFERENCES corporation(coid),
-	sid int REFERENCES store(sid)
+	coid int REFERENCES corporations(coid),
+	sid int REFERENCES stores(sid)
 );
+
+
+--BE CAREFUL WITH REMOVING TABLES THAT HAVE DEPENDANT TABLES
+--DROP TABLE giftcards;
+--DROP TABLE corporations;
+--DROP TABLE stores;
+--DROP TABLE giftcard_usage;
+--DROP TABLE corp_stores;
