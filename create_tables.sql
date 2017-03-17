@@ -1,5 +1,5 @@
 CREATE TABLE giftcards(
-	gid int PRIMARY KEY,
+	gid bigint PRIMARY KEY,
 	amount decimal NOT NULL
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE stores(
 );
 
 CREATE TABLE giftcard_usage(
-	gid int REFERENCES giftcards(gid),
+	gid bigint REFERENCES giftcards(gid),
 	coid int REFERENCES corporations(coid),
 	date_used date NOT NULL
 );
