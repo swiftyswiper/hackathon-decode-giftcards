@@ -1,6 +1,6 @@
 CREATE TABLE giftcards(
 	gid int PRIMARY KEY,
-	amount int NOT NULL
+	amount decimal NOT NULL
 );
 
 CREATE TABLE corporations(
