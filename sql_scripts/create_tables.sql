@@ -1,6 +1,6 @@
 CREATE TABLE giftcards(
 	giftcard_id bigint PRIMARY KEY,
-	amount decimal NOT NULL
+	balance decimal NOT NULL
 );
 
 CREATE TABLE corporations(

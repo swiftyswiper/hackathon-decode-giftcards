@@ -23,7 +23,7 @@ app.get("/card",function(req,res) //get a giftcard from db. res is just an id
 		else{
 			console.log("Error connecting database ... nn"); 
 		}   
-   		client.query('SELECT * FROM giftcards WHERE gId = ?', [gId], function (err, result) 
+   		client.query('SELECT * FROM giftcards WHERE giftcard_id = ?', [gId], function (err, result) 
 		{
       			done()
      			if (err){ 
@@ -47,7 +47,7 @@ app.post("/card/setFunds",function(req,res) //update funds. res is amount and id
 		else{
 			console.log("Error connecting database ... nn"); 
 		}   
-   		client.query('UPDATE giftcards SET amount = ? WHERE gid = ?;', [newFunds, gId], function (err, result) 
+   		client.query('UPDATE giftcards SET amount = ? WHERE giftcard_id = ?;', [newFunds, gId], function (err, result) 
 		{
       			done() //connection can be closed
      			if (err){ 
@@ -83,12 +83,12 @@ app.get('/card/newCard', (req, res) => {
 
   client.connect(function () {
 
-  	if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE gID=?', [newGiftCardID]))
+  	if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?', [newGiftCardID]))
   	{
   		newGiftCardID = uuid.v1();
   	}
     // SQL Query > Insert Data
-    var query = client.query('INSERT INTO giftcards(gid, amount) values(?, ?)', [newGiftCardID, 0]);
+    var query = client.query('INSERT INTO giftcards(giftcard_id, balance) values(?, ?)', [newGiftCardID, 0]);
 
     // After all data is returned, close connection and return results
     query.on('end', () => {
