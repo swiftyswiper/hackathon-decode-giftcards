@@ -98,6 +98,21 @@ app.post('/card/:id/credit', function (req, res) {
     });
 });
 
+/*
+ * Get valid locations 
+ */
+app.get('/card/:id/stores', function (req, res) {
+    gcAPI.getStores(
+            req.params.id,
+            function(error, result) {
+        console.log("GET /card/" + req.params.id + "/stores");
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        res.send(result);
+    });
+});
+
 
 app.listen(3000, function () {
   console.log('decode-giftcards server listening on port 3000!');
