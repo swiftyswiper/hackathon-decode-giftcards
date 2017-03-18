@@ -1,4 +1,4 @@
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 
 module.exports = function giftcardAPI(client) {
     return {
@@ -47,7 +47,7 @@ module.exports = function giftcardAPI(client) {
             client.connect();
 
             //check for duplicate gift card ID's
-            if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?', [newGiftCardID]))
+            if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?}', [newGiftCardID]))
   			{
   				newGiftCardID = uuid.v1();
   			}
@@ -77,7 +77,7 @@ module.exports = function giftcardAPI(client) {
                 newBalance = gcObject.amount + transaction;
             }
 
-            client.query(`UPDATE giftcards SET balance=${newBalance} WHERE id=${gcObject.giftcard_id}`);
+            client.query(`UPDATE giftcards SET balance=${newBalance} WHERE giftcard_id=${gcObject.giftcard_id}`);
 
             this.getCard(gcObject.giftcard_id, function(error, result) {
                 if (error) {
