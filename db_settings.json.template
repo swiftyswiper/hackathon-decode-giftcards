@@ -1,0 +1,6 @@
+{
+    "database": "decode-giftcards.cifyct45uft4.us-east-1.rds.amazonaws.com",
+    "name": "giftcards",
+    "username": "pgsql",
+    "password": "decode-giftcards"
+}

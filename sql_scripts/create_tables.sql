@@ -1,6 +1,6 @@
 CREATE TABLE giftcards(
-	giftcard_id bigint PRIMARY KEY,
-	amount decimal NOT NULL
+	giftcard_id varchar(36) PRIMARY KEY,
+	balance decimal NOT NULL
 );
 
 CREATE TABLE corporations(
@@ -14,9 +14,9 @@ CREATE TABLE stores(
 );
 
 CREATE TABLE giftcard_usage(
-	giftcard_id bigint REFERENCES giftcards(giftcard_id),
+	giftcard_id varchar(36) REFERENCES giftcards(giftcard_id),
 	corp_id int REFERENCES corporations(corp_id),
-	date_used date NOT NULL
+	date_created date NOT NULL
 );
 
 CREATE TABLE corp_stores(
