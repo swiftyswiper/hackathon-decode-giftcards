@@ -1,5 +1,5 @@
 CREATE TABLE giftcards(
-	giftcard_id bigint PRIMARY KEY,
+	giftcard_id uuid PRIMARY KEY,
 	balance decimal NOT NULL
 );
 
