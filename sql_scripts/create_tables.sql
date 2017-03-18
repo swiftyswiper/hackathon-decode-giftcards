@@ -14,7 +14,7 @@ CREATE TABLE stores(
 );
 
 CREATE TABLE giftcard_usage(
-	giftcard_id bigint REFERENCES giftcards(giftcard_id),
+	giftcard_id uuid REFERENCES giftcards(giftcard_id),
 	corp_id int REFERENCES corporations(corp_id),
 	date_created date NOT NULL
 );
