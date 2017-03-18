@@ -11,33 +11,40 @@ import AppBar from 'material-ui/AppBar';
 
 injectTapEventPlugin();
 
-function giftcard(amount, orgID, giftID){
+function giftcard(giftID, amount, orgID){
   this.ID = giftID;
   this.amount = amount;
   this.orgID = orgID;
 }
 
-var gc = new giftcard(150, 102, 12);
+var gc = new giftcard(NaN, NaN, NaN);
 var isValid = false;
 var cardInfoDiv = '';
 const hostURL = 'http://localhost:3200';
 const getCardURL = hostURL + '/card';
-const creditURL = hostURL + '/card/:id/credit'
+var creditURL = hostURL + '/card/:ID/credit'
 const uu = 'https://api.github.com/users/mralexgray/repos';
+var createCardSuccess = false;
+
+
+const sucessDiv = {
+  color: 'green',
+};
 
 class App extends Component {
 constructor(props) {
     super(props);
-    this.state = {value: '', addValue: '', card: ''};
+    this.state = {value: '', addValue: '', newID: '', card: ''};
     this.handleChange = this.handleChange.bind(this);
     this.handleAddValueChange = this.handleAddValueChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddFundsSubmit = this.handleAddFundsSubmit.bind(this);
-
+    this.handleCreateNewCard = this.handleCreateNewCard.bind(this);
   }
 
   componentDidMount(){
     document.getElementById("addFundsForm").style.display="none";
+    document.getElementById("newCardDisplay").style.display="none";
   }
 
   handleFetchErrors(response) {
@@ -47,9 +54,36 @@ constructor(props) {
     return response;
   }
 
+  handleCreateNewCard(event){
+    fetch(getCardURL,{
+      method: "POST", mode: 'no-cors',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        "corp_id": '123123123'
+      })
+    })
+    .then((response) => {return response.json(); }).catch((err)=>{return null})
+    .then((jsonObject) => {
+      console.log(jsonObject);
+      if(jsonObject != null && jsonObject.giftcard_id != null){
+        createCardSuccess = true;
+        document.getElementById("newCardDisplay").style.display="block";
+        this.setState({newID: jsonObject.giftcard_id});
+      } else{
+        createCardSuccess = false;
+        //createdCardID = '1GGS-3HAD-6HS7-SGH4';
+        document.getElementById("newCardDisplay").style.display="none";
+        this.setState({newID: '1GGS-3HAD-6HS7-SGH4'});
+      }
+    });
+
+    event.preventDefault();
+  }
+
+
   handleChange(event) {
     var input = event.target.value;
-    this.setState({value: parseInt(input)});
+    this.setState({value: input});
   }
 
   handleAddValueChange(event) {
@@ -60,8 +94,8 @@ constructor(props) {
 
   handleAddFundsSubmit(event){
     var input = parseFloat(event.target.value);
-    gc.amount += input;
-
+    //gc.amount += input;
+    console.log(creditURL);
     fetch(creditURL,{
       method: "POST", mode: 'no-cors',
       headers: {"Content-Type": "application/json"},
@@ -71,7 +105,8 @@ constructor(props) {
     })
     .then((response) => {return response.json(); }).catch((err)=>{return null})
     .then((jsonObject) => {
-      console.log("amount request");
+      console.log(jsonObject);
+      //console.log("amount request");
     });
     gc.amount += event.target.value;
     event.preventDefault();
@@ -86,6 +121,7 @@ constructor(props) {
         if(jsonObject != null && jsonObject.ID != null && this.state.value === jsonObject.ID){
           isValid = true;
           gc = new giftcard(jsonObject.ID, jsonObject.amount, jsonObject.orgID);
+          creditURL = hostURL + '/card/' + gc.ID + '/credit'
         }
         else 
           isValid = false;
@@ -119,6 +155,15 @@ constructor(props) {
        <div>
         <AppBar title = "Gift Card" iconClassNameRight="muidocs-icon-navigation-expand-more" >
         </AppBar>
+        <form onSubmit={this.handleCreateNewCard}>
+          <label>
+            <h2>Create New Gift Card</h2>
+          </label>
+          <RaisedButton label = "Create"  primary={true} type="Submit" />
+        </form>
+        <div id="newCardDisplay" style={sucessDiv}>
+          <h4>Successfully Created Card with ID: {this.state.newID} </h4>
+        </div>
         <form onSubmit={this.handleSubmit}>
           <label>
             <h2>Check Gift Card Funds</h2>

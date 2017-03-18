@@ -4,8 +4,8 @@ var express = require('express');
 var app = express();
 
 var cardObject = {
-		"ID":12,
-		"amount": 500,
+		"ID":'12',
+		"amount": 500.00,
 		"orgID": 1001
 	};
 
@@ -21,7 +21,7 @@ app.get('/card', function (req, res) {
     res.send(JSON.stringify(cardObject));
 });
 
-/*
+/*	
  * Get info about a card
  */
 app.get('/card/:id', function (req, res) {
