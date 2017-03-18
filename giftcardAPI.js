@@ -41,7 +41,6 @@ module.exports = function giftcardAPI(client) {
         },
         createCard: function(callback) {
             var newGiftCardID = uuid.v1();
-
             var balance = '0.00';
 
             // //check for duplicate gift card ID's
