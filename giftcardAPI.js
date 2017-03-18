@@ -1,9 +1,9 @@
 var uuid = require('uuid');
 
 module.exports = function giftcardAPI(client) {
+    client.connect();
     return {
         getCard: function(gId, callback) {
-            client.connect();
 
             const query = client.query(
                 `SELECT * FROM giftcards WHERE giftcard_id = '${gId}'`);
@@ -16,12 +16,10 @@ module.exports = function giftcardAPI(client) {
                 callback(null, answer);
             });
             query.on('error', (error) => { console.log(error); client.end(); });
-            query.on('end', () => { client.end(); });
         },
         getAllCards: function(callback) { //checks for duplicates upon card generation
             var results = [];
 
-            client.connect();
             const query = client.query(
                 `SELECT * FROM giftcards ORDER BY giftcard_id ASC;`);
             query.on('row', (row) => {
@@ -46,7 +44,6 @@ module.exports = function giftcardAPI(client) {
             var newGiftCardID = uuid.v1();
             var balance = 0.00;
 
-            client.connect();
 
             //check for duplicate gift card ID's
             if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?', [newGiftCardID]))
@@ -65,8 +62,6 @@ module.exports = function giftcardAPI(client) {
                     callback(null, result); //"returns" new gift card object
                 }
             });
-            // After all data is returned, close connection and return results
-            query.on('end', () => { client.end(); });
         },
             
         handleTransaction: function(transaction, gc_id, callback) {
@@ -88,8 +83,6 @@ module.exports = function giftcardAPI(client) {
                 const query = client.query(`UPDATE giftcards SET balance=${newBalance} WHERE giftcard_id=${giftcard.giftcard_id};`);
                 console.log("I was updated!!!!!!!");
 
-                //client.end();
-                // console.log(query);;
 
                 callback(null, {giftcard_id: giftcard.giftcard_id, 
                     balance: newBalance});
