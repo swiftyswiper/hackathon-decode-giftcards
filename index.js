@@ -2,8 +2,8 @@ var mysql = require('pg')
 var uuid = require(”node-uuid”);
 var connection = mysql.createConnection({ //db connection settings
   host     : 'localhost',
-  user     : '<USER>',
-  password : '<PASS>',
+  user     : '',
+  password : '',
   database : '<DBNAME>'
 });
 var app = express();
@@ -96,3 +96,5 @@ app.get('/card/newCard', (req, res) => {
       return newGiftCardID;
     });
   });
+
+app.listen(3000); //change 3000 based on port
