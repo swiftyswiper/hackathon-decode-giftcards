@@ -67,6 +67,7 @@ module.exports = function giftcardAPI(client) {
 
                 if (giftcard.balance+transaction < 0) {
                     callback("insufficient funds");
+                    return;
                 } else {
                     newBalance = +giftcard.balance + transaction;
                 }

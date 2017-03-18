@@ -62,8 +62,20 @@ app.get('/card/:id', function (req, res) {
  * Debit a card
  */
 app.post('/card/:id/debit', function (req, res) {
-    console.log(req.params.id);
-    res.status(500).send('Enpoint not implemented');
+    gcAPI.handleTransaction(
+            -req.body.amount,
+            req.params.id,
+            function(error, giftcard) {
+        console.log("GET /card/" + req.params.id + "/debit");
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        if (error !== null) {
+            res.status(400).send({"error": "insufficient funds"});
+        } else {
+            res.send(giftcard);
+        }
+    });
 });
 
 /*
@@ -78,7 +90,7 @@ app.post('/card/:id/credit', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
 
-        if (giftcard === "insufficient funds") {
+        if (error !== null) {
             res.status(500).send('insufficient funds');
         } else {
             res.send(giftcard);
