@@ -3,12 +3,22 @@
 var express = require('express');
 var app = express();
 
+var cardObject = {
+		"ID":12,
+		"amount": 500,
+		"orgID": 1001
+	};
+
+
 
 /*
  * Provisioning a new card
  */
-app.post('/card', function (req, res) {
-    res.status(500).send('Enpoint not implemented');
+app.get('/card', function (req, res) {
+    //res.status(500).send('Enpoint not implemented');
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin','*');
+    res.send(JSON.stringify(cardObject));
 });
 
 /*
@@ -37,6 +47,6 @@ app.post('/card/:id/credit', function (req, res) {
 });
 
 
-app.listen(3000, function () {
-  console.log('decode-giftcards server listening on port 3000!');
+app.listen(3200, function () {
+  console.log('decode-giftcards server listening on port 3200!');
 });
