@@ -1,8 +1,10 @@
 "use strict";
     
 var express = require('express');
+var bodyparser = require('body-parser');
 var pg = require('pg');
 var app = express();
+app.use(bodyparser.json());
 
 const db_settings = require('./db_settings.json');
 const connectionString = "postgres://" + 
@@ -28,24 +30,31 @@ app.get('/', function (req, res) {
  * Provisioning a new card
  */
 app.post('/card', function (req, res) {
-    res.status(500).send('Enpoint not implemented');
+    gcAPI.createCard(function(error, card_id) {
+        console.log("POST /card");
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Location', `${card_id}`);
+
+        res.send({"card_id": card_id, "balance": 0.0});
+    });
 });
 
 /*
  * Get info about a card
  */
 app.get('/card/:id', function (req, res) {
-    try {
-        gcAPI.getCard(req.params.id, function(error, giftcard) {
-            console.log("GET /card/" + req.params.id);
-            res.setHeader('Content-Type', 'application/json');
-            res.setHeader('Access-Control-Allow-Origin', '*');
+    gcAPI.getCard(req.params.id, function(error, giftcard) {
+        console.log("GET /card/" + req.params.id);
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
+        if (giftcard === undefined) {
+            res.status(404).send('Card does not exist');
+        } else {
             res.send(giftcard);
-        });
-    } catch (error) {
-        res.status(404).send('Card does not exist');
-    }
+        }
+    });
 });
 
 
@@ -61,8 +70,20 @@ app.post('/card/:id/debit', function (req, res) {
  * Credit a card
  */
 app.post('/card/:id/credit', function (req, res) {
-    console.log(req.params.id);
-    res.status(500).send('Enpoint not implemented');
+    gcAPI.handleTransaction(
+            req.body.amount,
+            req.params.id,
+            function(error, giftcard) {
+        console.log("GET /card/" + req.params.id + "/credit");
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        if (giftcard === "insufficient funds") {
+            res.status(500).send('insufficient funds');
+        } else {
+            res.send(giftcard);
+        }
+    });
 });
 
 

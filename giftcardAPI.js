@@ -23,7 +23,6 @@ module.exports = function giftcardAPI(client) {
             const query = client.query(
                 `SELECT * FROM giftcards ORDER BY giftcard_id ASC;`);
             query.on('row', (row) => {
-                // console.log(row);
                 results.push(row);
             });
             // After all data is returned, close connection and return results
@@ -43,7 +42,6 @@ module.exports = function giftcardAPI(client) {
         createCard: function(callback) {
             var newGiftCardID = uuid.v1();
 
-            console.log(newGiftCardID); //36 characters, string
             var balance = '0.00';
 
             // //check for duplicate gift card ID's
@@ -55,12 +53,9 @@ module.exports = function giftcardAPI(client) {
 
             //SQL TEST: INSERT INTO giftcards(giftcard_id, balance) values('af85d680-0c15-11e7-a68d-277af3e783e9', 0.00)
             const query = client.query(`INSERT INTO giftcards(giftcard_id, balance) values('${newGiftCardID}', ${balance})`);
-            console.log("GC created!");
 
             callback(null, newGiftCardID);
 
-            // After all data is returned, close connection and return results
-            query.on('end', () => { client.end(); });
             query.on('error', (error) => { console.log(error); client.end(); });
         },
             
@@ -72,39 +67,17 @@ module.exports = function giftcardAPI(client) {
                 var newBalance;
 
                 if (giftcard.balance+transaction < 0) {
-                    callback("Not enough in balance for transaction!");
+                    callback("insufficient funds");
                 } else {
-                    console.log("You can do this update!! Yahhhhss")
                     newBalance = +giftcard.balance + transaction;
                 }
 
-                console.log(newBalance);
-                //UPDATE giftcards SET balance=0 WHERE giftcard_id=1234567890123456;
-                const query = client.query(`UPDATE giftcards SET balance=${newBalance} WHERE giftcard_id=${giftcard.giftcard_id};`);
-                console.log("I was updated!!!!!!!");
-
+                const query = client.query(`UPDATE giftcards SET balance=${newBalance} WHERE giftcard_id='${giftcard.giftcard_id}';`);
 
                 callback(null, {giftcard_id: giftcard.giftcard_id, 
                     balance: newBalance});
 
             })
-
-
-            
-
-
-
-            // this.getCard(gcObject.giftcard_id, function(error, result, done) {
-            //     if (error) {
-            //         console.log(error);
-            //     } else {
-            //         console.log(`Balance updated to: ${result.balance}!`);
-            //         callback(null, result); //"returns" updated gift card object
-            //     }
-            // });
-                // After all data is returned, close connection and return results
-
-            // query.on('error', (error) => {console.log(error)});
         },
         //add more functions for getCorporation and getStore?
         getAllTheThings: function(callback){
