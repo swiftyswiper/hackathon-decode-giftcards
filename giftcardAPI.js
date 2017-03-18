@@ -113,7 +113,7 @@ module.exports = function giftcardAPI(client) {
 ****************************************************/
 /*
 INSTRUCTIONS
-1. Make sure lines 119-124 are in your .js/.jsx file (to connect to database AND access giftcardAPI)
+1. Make sure lines 121-126 are in your .js/.jsx file (to connect to database AND access giftcardAPI)
 2. See line 128 below for test call
 
 */
