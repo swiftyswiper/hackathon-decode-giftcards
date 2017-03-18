@@ -113,21 +113,27 @@ constructor(props) {
   }
 
   handleSubmit(event) {
+    console.log(this.state.value);
+      getCardURL = hostURL + '/card/' + this.state.value;
+      console.log(getCardURL);
       fetch(getCardURL)
       .then( (response) => {
-        return response.json(); }).catch((err) => {return null})
+        return response.json(); }).catch((err) => {console.log("failed to fetch"); return null})
       .then(jsonObject => {
         //check if card is valid and the user inputted ID is equal to the one on the server
-        if(jsonObject != null && jsonObject.ID != null && this.state.value === jsonObject.ID){
+        if(jsonObject != null && jsonObject.giftcard_id != null && this.state.value === jsonObject.giftcard_id){
           isValid = true;
-          gc = new giftcard(jsonObject.ID, jsonObject.amount, jsonObject.orgID);
+          console.log("ID: "  +jsonObject.giftcard_id);
+          gc = new giftcard(jsonObject.giftcard_id, jsonObject.balance, '0');
           creditURL = hostURL + '/card/' + gc.ID + '/credit'
         }
-        else 
+        else {
           isValid = false;
+          console.log("invalid gift card id")
+        }
         if(isValid){
-        console.log("valid card found");
-        cardInfoDiv = <div><h4>Card ID: </h4> {gc.giftID}
+        console.log("valid card found: " + gc.ID);
+        cardInfoDiv = <div><h4>Card ID: </h4> {gc.ID}
          <h4>Funds Remaining: </h4> ${gc.amount}
          <h4>Valid Stores: </h4></div>;
 
