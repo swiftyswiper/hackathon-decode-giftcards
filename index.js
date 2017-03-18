@@ -43,7 +43,9 @@ app.post('/card/:id/debit', function (req, res) {
  */
 app.post('/card/:id/credit', function (req, res) {
     console.log(req.params.id);
+    res.setHeader('Access-Control-Allow-Origin','*');
     res.status(500).send('Enpoint not implemented');
+
 });
 
 
