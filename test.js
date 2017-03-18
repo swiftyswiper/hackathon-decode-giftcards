@@ -35,14 +35,14 @@ app.get("/card/:id", function(req, res) //get a giftcard from db. res is just an
 
 
 //TESTING
-// giftcardAPI.createCard(function(error, result){
-// 	if(error){
-// 		console.log(error);
-// 	}
-// 	else{
-// 		console.log("gift card created: ", result);
-// 	}
-// })
+giftcardAPI.createCard(function(error, result){
+	if(error){
+		console.log(error);
+	}
+	else{
+		console.log("gift card created: ", result);
+	}
+})
 
 // giftcardAPI.getAllCards(function(err, res){
 // 	if(err){
@@ -53,16 +53,17 @@ app.get("/card/:id", function(req, res) //get a giftcard from db. res is just an
 // 	}
 // });
 
-giftcardAPI.handleTransaction(-121, 1234567890123456, function(err, result){
-	if(err){
-		console.log(err);
-	}
-	else{
-		console.log(result);
-	}
-})
+// giftcardAPI.handleTransaction(-121, 1234567890123456, function(err, result){
+// 	if(err){
+// 		console.log(err);
+// 	}
+// 	else{
+// 		console.log(result);
+// 	}
+// })
 
- // giftcardAPI.getCard(1234567890123456, function(error, result) {
+// //test: 61ce7884-6d64-4f69-ba53-aeb1108f8fa0
+ // giftcardAPI.getCard('61ce7884-6d64-4f69-ba53-aeb1108f8fa0', function(error, result) {
  //        if (error) {
  //            console.log(error);
  //        } else {
