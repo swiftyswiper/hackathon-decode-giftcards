@@ -1,7 +1,7 @@
 var pg = require('pg')
 var uuid = require('node-uuid');
 var express = require('express');
-const conString = 'postgres://@localhost/giftcards';
+const conString = 'postgres://@localhost/justin';
 var app = express();
 const client = new pg.Client(conString)
 
@@ -95,4 +95,4 @@ app.get('/card/newCard', (req, res) => {
   });
 });
 
-app.listen(3000); //change 3000 based on port
+app.listen(3001); //change 3000 based on port

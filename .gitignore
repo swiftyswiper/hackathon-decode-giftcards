@@ -1,4 +1,6 @@
 node_modules/
 
+db_settings.json
+
 *.log
 *.swp
