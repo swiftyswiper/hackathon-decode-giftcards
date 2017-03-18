@@ -47,7 +47,7 @@ module.exports = function giftcardAPI(client) {
             client.connect();
 
             //check for duplicate gift card ID's
-            if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?}', [newGiftCardID]))
+            if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?', [newGiftCardID]))
   			{
   				newGiftCardID = uuid.v1();
   			}
