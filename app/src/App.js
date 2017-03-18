@@ -22,6 +22,7 @@ var isValid = false;
 var cardInfoDiv = '';
 const hostURL = 'http://localhost:3200';
 const getCardURL = hostURL + '/card';
+var createURL = hostURL + '/card';
 var creditURL = hostURL + '/card/:ID/credit'
 const uu = 'https://api.github.com/users/mralexgray/repos';
 var createCardSuccess = false;
@@ -55,20 +56,21 @@ constructor(props) {
   }
 
   handleCreateNewCard(event){
-    fetch(getCardURL,{
-      method: "POST", mode: 'no-cors',
+    console.log(createURL);
+    fetch(createURL,{
+      method: "POST",// mode:'no-cors',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         "corp_id": '123123123'
       })
     })
-    .then((response) => {return response.json(); }).catch((err)=>{return null})
+    .then((response) => {if(response.ok) console.log(response); return response.json(); }).catch((err)=>{return null})
     .then((jsonObject) => {
       console.log(jsonObject);
-      if(jsonObject != null && jsonObject.giftcard_id != null){
+      if(jsonObject != null && jsonObject.card_id != null){
         createCardSuccess = true;
         document.getElementById("newCardDisplay").style.display="block";
-        this.setState({newID: jsonObject.giftcard_id});
+        this.setState({newID: jsonObject.card_id});
       } else{
         createCardSuccess = false;
         //createdCardID = '1GGS-3HAD-6HS7-SGH4';
@@ -93,11 +95,11 @@ constructor(props) {
   }
 
   handleAddFundsSubmit(event){
-    var input = parseFloat(event.target.value);
+    var input = parseFloat(this.state.addValue);
     //gc.amount += input;
     console.log(creditURL);
     fetch(creditURL,{
-      method: "POST", mode: 'no-cors',
+      method: "POST",// mode: 'no-cors',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         "amount": input
@@ -108,7 +110,19 @@ constructor(props) {
       console.log(jsonObject);
       //console.log("amount request");
     });
-    gc.amount += event.target.value;
+    console.log("add: " + input);
+    gc.amount += input;
+    console.log(gc.amount);
+    cardInfoDiv = <div><h4>Card ID: </h4> {gc.ID}
+         <h4>Funds Remaining: </h4> ${gc.amount}
+         <h4>Valid Stores: </h4></div>;
+    this.setState({
+            card: {
+              "ID": gc.ID,
+              "amount": gc.amount,
+              "orgID": gc.orgID}
+          });
+    this.forceUpdate();
     event.preventDefault();
   }
 
