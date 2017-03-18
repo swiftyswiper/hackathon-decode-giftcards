@@ -2,7 +2,6 @@
   "name": "decode-giftcards",
   "version": "1.0.0",
   "description": "A gift card service",
-
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,6 +19,7 @@
   "homepage": "https://github.com/lightspeedretail/decode-giftcards#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "cors": "^2.8.1",
     "express": "^4.15.2",
     "pg": "^6.1.4",
     "uuid": "^3.0.1"
