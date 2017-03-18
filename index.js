@@ -1,14 +1,11 @@
 var pg = require('pg')
 var uuid = require('node-uuid');
-var connection = pg.createConnection({ //db connection settings
-  host     : 'localhost:5432',
-  user     : '',//'<USER>',
-  password : '',//'<PASS>',
-  database : 'giftcards'
-});
+var express = require('express');
+const conString = 'postgres://@localhost/giftcards';
 var app = express();
-//var client = new pg.Client()
-connection.connect(function(err)
+const client = new pg.Client(conString)
+
+client.connect(function(err)
 {
 
 })
@@ -97,6 +94,5 @@ app.get('/card/newCard', (req, res) => {
     });
   });
 });
-
 
 app.listen(3000); //change 3000 based on port
