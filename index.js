@@ -91,7 +91,7 @@ app.post('/card/:id/credit', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if (error !== null) {
-            res.status(500).send('insufficient funds');
+            res.status(500).send({"error": "insufficient funds"});
         } else {
             res.send(giftcard);
         }

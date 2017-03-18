@@ -65,11 +65,15 @@ module.exports = function giftcardAPI(client) {
 
                 var newBalance;
 
-                if (giftcard.balance+transaction < 0) {
+                if (+transaction === NaN) {
+                    callback("transaction amount must be a number");
+                };
+
+                if (giftcard.balance + +transaction < 0) {
                     callback("insufficient funds");
                     return;
                 } else {
-                    newBalance = +giftcard.balance + transaction;
+                    newBalance = +giftcard.balance + +transaction;
                 }
 
                 const query = client.query(`UPDATE giftcards SET balance=${newBalance} WHERE giftcard_id='${giftcard.giftcard_id}';`);
