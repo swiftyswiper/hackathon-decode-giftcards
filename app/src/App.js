@@ -11,8 +11,6 @@ import TextField from 'material-ui/TextField';
 import AppBar from 'material-ui/AppBar';
 
 
-
-
 injectTapEventPlugin();
 
 function giftcard(amount, orgID, giftID){
@@ -23,81 +21,84 @@ function giftcard(amount, orgID, giftID){
 
 var gc = new giftcard(150, 102, 12);
 var isValid = false;
-var s = '';
-
-const AppBarExampleIcon = () => (
-  <AppBar
-    title="Title"
-    iconClassNameRight="muidocs-icon-navigation-expand-more"
-  />
-);
-
-
-class Bar extends Component{
-    render(){
-    return(
-      <MuiThemeProvider>
-      <div>
-        <AppBar
-          title="Title"
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
-        />
-        </div>
-      </MuiThemeProvider>
-    )
-  }
-}
-
-var Avatar = React.createClass({
-  render: function() {
-    return (
-      <div>
-        <h1>swag</h1>
-      </div>
-    );
-  }
-});
+var cardInfoDiv = '';
+const url = 'https://localhost:3000/card/';
 
 
 class App extends Component {
-
-
-
 constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {value: '', addValue: '', card: ''};
     this.handleChange = this.handleChange.bind(this);
+    this.handleAddValueChange = this.handleAddValueChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAddFunds = this.handleAddFunds.bind(this);
+
   }
 
+  componentDidMount(){
+    document.getElementById("addFundsForm").style.display="none";
+  }
+
+  
+
   handleChange(event) {
-    this.setState({value: event.target.value});
+    var input = event.target.value
+    //input = chunk(input,4).join(' ');
+    this.setState({value: input});
+  }
+
+  handleAddValueChange(event) {
+    var input = event.target.value;
+    this.setState({addValue: input});
+    console.log(this.state.addValue);
+  }
+
+  handleAddFunds(event){
+    gc.amount += event.target.value;
   }
 
   handleSubmit(event) {
     console.log(this.state.value);
-    if(this.state.value === '12')
+    if(this.state.value.trim() === '12')
       isValid = true;
     else
       isValid = false;
     console.log(isValid);
     if(isValid){
+      fetch(url)
+      .then(function(result){
+        console.log("fetched");
+        this.setState({
+        card: {
+          id: result.ID,
+          amount: result.amount
+        }
+      });
+      console.log("FOUND");
+    })
+
+    // {this.state.card ? (<div><h4>Card ID: </h4> {gc.giftID}
+    //        <h4>Funds Remaining: </h4> ${gc.amount}
+    //        <h4>Valid Stores: </h4></div>;) : null}
+     
       //alert('A VALID name was submitted: ' + this.state.value);
-      s = <div><h3>Card ID: </h3> {gc.giftID}
-       <h3>Funds Remaining: </h3> ${gc.amount}
-       <h3>Valid Stores: </h3></div>;
+      cardInfoDiv = <div><h4>Card ID: </h4> {gc.giftID}
+       <h4>Funds Remaining: </h4> ${gc.amount}
+       <h4>Valid Stores: </h4></div>;
+
+      document.getElementById("addFundsForm").style.display="block";
       this.forceUpdate();
       event.preventDefault();
     } else {
       //alert('Card ID ' + this.state.value + ' was not found');
-      s= <h3>Invalid Card ID</h3>;
+      cardInfoDiv = <h3>Invalid Card ID</h3>;
+      document.getElementById("addFundsForm").style.display="none"; 
        this.forceUpdate();
       event.preventDefault();
     }
     
   }
-
-
 
   render() {
     return (
@@ -111,21 +112,28 @@ constructor(props) {
           <label>
             <h2>Check Gift Card Funds</h2>
             Gift Card ID:
-            <TextField type="text" floatingLabelText="16-Digit ID"   value={this.state.value} onChange={this.handleChange} />
+            <TextField type="text" floatingLabelText="16-Digit ID" value={this.state.value} onChange={this.handleChange} />
           </label>
           
           <RaisedButton label = "Check"  primary={true} type="Submit" />
-          {s}
+          {cardInfoDiv}
+          
+          
         </form>
+
+        <form onSubmit={this.handleAddFunds} id = "addFundsForm" >
+          <label>
+            <h2>Add Funds</h2>
+            <TextField type="text" floatingLabelText="Amount to Add" value={this.state.addValue} onChange={this.handleAddValueChange} id="addFundsBox" />
+          </label>
+          <RaisedButton label = "Add"  primary={true} type="Submit" />
+        </form>
+
       </div>
       </MuiThemeProvider>
      
     );
-  }
-
-
- 
-
+  } 
 }
 
 export default App;
