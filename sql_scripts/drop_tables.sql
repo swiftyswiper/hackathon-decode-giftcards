@@ -1,0 +1,6 @@
+--BE CAREFUL WITH REMOVING TABLES THAT HAVE DEPENDANT TABLES
+DROP TABLE corp_stores;
+DROP TABLE giftcard_usage;
+DROP TABLE stores;
+DROP TABLE corporations;
+DROP TABLE giftcards;

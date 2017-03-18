@@ -2,10 +2,11 @@
   "name": "decode-giftcards",
   "version": "1.0.0",
   "description": "A gift card service",
-  "main": "giftCard.js",
+
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "giftCard.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,7 @@
   },
   "homepage": "https://github.com/lightspeedretail/decode-giftcards#readme",
   "dependencies": {
-    "express": "^4.15.2",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+
+    "express": "^4.15.2"
   }
 }
