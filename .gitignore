@@ -1,4 +1,5 @@
 node_modules/
+nodesource_setup.sh
 
 *.log
 *.swp

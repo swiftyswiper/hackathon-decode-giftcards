@@ -9,10 +9,6 @@ bash nodesource_setup.sh
 apt-get install nodejs -y
 apt-get install build-essential -y
 
-# install dependencies
-cd ~/devcode-giftcards/
-npm install
-
 # install and setup nginx
 apt-get install nginx -y
 cp config/decode-giftcards /etc/nginx/sites-available
