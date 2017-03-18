@@ -44,38 +44,28 @@ module.exports = function giftcardAPI(client) {
             var newGiftCardID = uuid.v1();
             var balance = 0.00;
 
-            console.log(`giftcard id generated: ${newGiftCardID}`);
-
             client.connect();
 
             //check for duplicate gift card ID's
-            this.getAllCards(function(error, result) {
+            if(client.query('SELECT EXISTS(SELECT 1 FROM giftcards WHERE giftcard_id=?', [newGiftCardID]))
+  			{
+  				newGiftCardID = uuid.v1();
+  			}
+ 
+            client.query('INSERT INTO giftcards(giftcard_id, balance) values(?, ?)', [newGiftCardID, balance]);
+
+            this.getCard(newGiftCardID, function(error, result) {
                 if (error) {
                     console.log(error);
                 } else {
-                    var idArray = result.map(function(eachCard) {
-                        return eachCard.giftcard_id;
-                    });
-
-                    if (idArray.indexOf(newGiftCardID) > -1) {
-                        throw Error(`Cannot create! Gift card ID already exists in database!`);
-                    } else {
-                        client.query('INSERT INTO giftcards(giftcard_id, balance) values(?, ?)', [newGiftCardID, balance]);
-
-                        this.getCard(newGiftCardID, function(error, result) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log(`New gift card created with id: ${result.giftcard_id} and balance: ${result.balance}!`);
-                                callback(null, result); //"returns" new gift card object
-                            }
-                        });
-                            // After all data is returned, close connection and return results
-                        query.on('end', () => { client.end(); });
-                    }
+                    console.log(`New gift card created with id: ${result.giftcard_id} and balance: ${result.balance}!`);
+                    callback(null, result); //"returns" new gift card object
                 }
             });
+            // After all data is returned, close connection and return results
+            query.on('end', () => { client.end(); });
         },
+            
         handleTransaction: function(transaction, gcObject, callback) {
             client.connect();
 
