@@ -29,6 +29,7 @@ module.exports = function giftcardAPI(client) {
             query.on('end', () => {
                 // done();
                 // return res.json(results);
+
                 callback(null,
                     results.map(function(eachCard) {
                         return {
@@ -65,10 +66,15 @@ module.exports = function giftcardAPI(client) {
 
                 var newBalance;
 
-                if (giftcard.balance+transaction < 0) {
+                if (+transaction === NaN) {
+                    callback("transaction amount must be a number");
+                }; //does not work :( 
+
+                if (giftcard.balance + +transaction < 0) {
                     callback("insufficient funds");
+                    return;
                 } else {
-                    newBalance = +giftcard.balance + transaction;
+                    newBalance = +giftcard.balance + +transaction;
                 }
 
                 const query = client.query(`UPDATE giftcards SET balance=${newBalance} WHERE giftcard_id='${giftcard.giftcard_id}';`);
@@ -79,15 +85,20 @@ module.exports = function giftcardAPI(client) {
             })
         },
         //add more functions for getCorporation and getStore?
-        getAllTheThings: function(callback){
+        getStores: function(card_id, callback) {
+            var queryString = `SELECT CORPORATIONS.NAME AS corporation_name, STORES.NAME AS store_name FROM CORPORATIONS NATURAL JOIN CORP_STORES JOIN STORES ON CORP_STORES.STORE_ID = STORES.STORE_ID WHERE CORPORATIONS.CORP_ID IN (SELECT CORP_ID FROM GIFTCARD_USAGE WHERE GIFTCARD_ID = '${card_id}');`
 
-                        /*var queryString = `SELECT CORPORATIONS.NAME AS corporation_name, STORES.NAME AS store_name
-FROM CORPORATIONS NATURAL JOIN CORP_STORES JOIN STORES ON CORP_STORES.STORE_ID = STORES.STORE_ID
-WHERE CORPORATIONS.CORP_ID IN 
-    (SELECT CORP_ID 
-    FROM GIFTCARD_USAGE 
-    WHERE GIFTCARD_ID = 1234567890123456)
-;`*/
+            const query = client.query(queryString);
+            var results = [];
+            query.on('row', (row) => {
+                results.push(
+                    {"corp_name": row.corporation_name, 
+                     "store_name": row.store_name});
+            })
+
+            query.on('end', (row) => {
+                callback(null, results);
+            })
         }
 
 
