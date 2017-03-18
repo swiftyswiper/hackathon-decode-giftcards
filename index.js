@@ -1,13 +1,13 @@
-var mysql = require('pg')
-var uuid = require(”node-uuid”);
-var connection = mysql.createConnection({ //db connection settings
-  host     : 'localhost',
-  user     : '<USER>',
-  password : '<PASS>',
-  database : '<DBNAME>'
+var pg = require('pg')
+var uuid = require('node-uuid');
+var connection = pg.createConnection({ //db connection settings
+  host     : 'localhost:5432',
+  user     : '',//'<USER>',
+  password : '',//'<PASS>',
+  database : 'giftcards'
 });
 var app = express();
-
+//var client = new pg.Client()
 connection.connect(function(err)
 {
 
@@ -96,3 +96,4 @@ app.get('/card/newCard', (req, res) => {
       return newGiftCardID;
     });
   });
+});

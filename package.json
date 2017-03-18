@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/lightspeedretail/decode-giftcards#readme",
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "node-uuid": "^1.4.7",
+    "pg": "^6.1.4"
   }
 }
