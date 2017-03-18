@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var pg = require('pg')
 var uuid = require('node-uuid');
 var connection = pg.createConnection({ //db connection settings
@@ -97,3 +98,6 @@ app.get('/card/newCard', (req, res) => {
     });
   });
 });
+
+
+app.listen(3000); //change 3000 based on port
