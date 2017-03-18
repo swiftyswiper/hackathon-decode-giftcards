@@ -35,23 +35,23 @@ app.get("/card/:id", function(req, res) //get a giftcard from db. res is just an
 
 
 //TESTING
-giftcardAPI.createCard(function(error, result){
-	if(error){
-		console.log(error);
-	}
-	else{
-		console.log("gift card created: ", result);
-	}
-})
-
-// giftcardAPI.getAllCards(function(err, res){
-// 	if(err){
-// 		console.log(err);
+// giftcardAPI.createCard(function(error, result){
+// 	if(error){
+// 		console.log(error);
 // 	}
 // 	else{
-// 		console.log(res);
+// 		console.log("gift card created: ", result);
 // 	}
-// });
+// })
+
+giftcardAPI.getAllCards(function(err, res){
+	if(err){
+		console.log(err);
+	}
+	else{
+		console.log(res);
+	}
+});
 
 // giftcardAPI.handleTransaction(-121, 1234567890123456, function(err, result){
 // 	if(err){

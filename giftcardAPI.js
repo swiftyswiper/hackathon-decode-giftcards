@@ -29,6 +29,7 @@ module.exports = function giftcardAPI(client) {
             query.on('end', () => {
                 // done();
                 // return res.json(results);
+
                 callback(null,
                     results.map(function(eachCard) {
                         return {
@@ -67,7 +68,7 @@ module.exports = function giftcardAPI(client) {
 
                 if (+transaction === NaN) {
                     callback("transaction amount must be a number");
-                };
+                }; //does not work :( 
 
                 if (giftcard.balance + +transaction < 0) {
                     callback("insufficient funds");
