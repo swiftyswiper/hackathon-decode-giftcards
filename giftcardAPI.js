@@ -4,20 +4,18 @@ module.exports = function giftcardAPI(client) {
     return {
         getCard: function(gId, callback) {
             client.connect();
-            // console.log("client in GETCARD:", client);
 
             const query = client.query(
-                `SELECT * FROM giftcards WHERE giftcard_id = ${gId}`);
+                `SELECT * FROM giftcards WHERE giftcard_id = '${gId}'`);
 
-            // console.log(query);
             query.on('row', (row) => {
-
                 var answer = {
-                    giftcard_id: +row.giftcard_id,
+                    giftcard_id: row.giftcard_id,
                     balance: +row.balance
                 }
                 callback(null, answer);
             });
+            query.on('error', (error) => { console.log(error); client.end(); });
             query.on('end', () => { client.end(); });
         },
         getAllCards: function(callback) { //checks for duplicates upon card generation
